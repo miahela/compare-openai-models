@@ -1,74 +1,56 @@
-# Compare Models
+# Compare OpenAI Models
 
-This script allows you to easily compare different OpenAI models by running the same prompt against each one and collecting their responses, token usage, and estimated pricing.
+Run the same prompt against several OpenAI models and export response previews, token usage, and estimated token costs to CSV. Use the results to inspect responses before choosing a model for an automation workflow.
 
----
+The [sample CSV](examples/sample_results.csv) is synthetic and contains no client data.
 
-## 🚀 How to Use
+## Run on Windows
 
-### 1. Set Up Your Environment
+Requires Python 3.10 or newer and an OpenAI API key with access to the chosen models.
 
-Create a `.env` file in the project directory and add your OpenAI API key:
+~~~powershell
+cd path\to\compare-openai-models
+py -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+Copy-Item .env.example .env
+notepad .env
+.\.venv\Scripts\python.exe compare_models.py
+Import-Csv .\model_comparison_results.csv | Format-Table
+~~~
 
-```
-OPENAI_API_KEY=your_api_key_here
-```
+Set the key, prompt, and comma-separated model IDs in .env. Shell variables take precedence. The example selects one model for a short live test. Without configuration the original multi-model list is used. Requests incur API charges.
 
+## Behavior
 
-You can get your API key from the [OpenAI dashboard](https://platform.openai.com/account/api-keys).
+Each model first receives a Responses API request with web_search. Any failure triggers one attempt without tools. supports_browsing means the tool-enabled request was accepted, not that a search occurred. Successful fallback clears the first error.
 
----
+.env.example documents configuration. Relative output paths use the working directory. CSV export overwrites existing files. Failed models are exported alongside successful ones with exit status 1. Export failure also returns status 1.
 
-### 2. Edit the Prompt
+## Stack
 
-Open `compare_models.py` and replace the placeholder text:
+Python, OpenAI Python SDK, python-dotenv, and standard-library CSV export. No pandas dependency is needed.
 
-```python
-PROMPT = """Enter Prompt Here"""
-```
-with the prompt you want to test.
+## Offline tests
 
----
+~~~powershell
+py -B -m unittest discover -s tests -v
+~~~
 
-### 3. Run the Script
+Tests use fake responses and need no key, installed SDK, or network.
 
-In your terminal, run:
-```
-python compare_models.py
-```
-The script will send your prompt to multiple models, wait briefly between requests, and log the results.
+## Models and prices
 
----
+Edit models_config.json to change the default model list, pricing tier, and USD rates per million input, cached input, and output tokens. MODELS in .env overrides the configured list. The config is loaded relative to the script.
 
-### 4. View the Results
+Prices last checked: **unknown**. The original table had no recorded verification date. It was carried over without online verification on **2026-10-30**; this is not a price-check date. The config records prices_last_checked as null. After checking the linked pricing source, update the rates and record the actual check date here and in the config.
 
-Once the run is complete, the results will be saved to:
-```
-model_comparison_results.csv
-```
+## Known limits
 
-This file includes details such as:
-- Model name
-- Whether browsing is supported
-- Token usage (input, cached, output, total)
-- Estimated cost
-- Short preview of the model’s output
+- Model availability and the historical prices in models_config.json have not been checked against current official OpenAI documentation. Update prices before relying on estimates.
+- Costs cover tokens only, excluding search fees and other charges. Unknown models produce nan; unknown pricing tiers fall back to Standard.
+- Tool-enabled and fallback responses may have different context.
+- Previews stop at 240 characters. Full responses, quality scores, and latency are not exported.
+- Any tool-request error triggers fallback, including authentication and network errors. Requests have a 60-second timeout and SDK retries disabled. Delay does not guarantee rate-limit compliance.
+- Review generated previews and errors before sharing because they may contain prompt or account details.
 
----
-
-⚙️ Requirements
-Install dependencies before running:
-```
-pip install openai python-dotenv pandas
-```
-(Optional) You can also install tabulate if you want to print formatted tables in the console.
-
----
-
-🧩 Notes
-
-The script automatically calculates estimated prices using predefined model pricing.
-
-You can modify the list of models in the MODELS variable.
-
-Default delay between API calls is 0.5 seconds to avoid rate limits.
+Live API validation has not been run. Offline tests cover local behavior with fake responses.

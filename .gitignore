@@ -1,5 +1,8 @@
-# Ignore environment files and caches
 .env
+.env.*
+!.env.example
+.venv/
 __pycache__/
 *.pyc
 *.csv
+!examples/sample_results.csv

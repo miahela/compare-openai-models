@@ -1,0 +1,74 @@
+{
+  "prices_last_checked": null,
+  "prices_carried_over": "2026-10-30",
+  "pricing_source": "https://platform.openai.com/docs/pricing?latest-pricing=standard",
+  "pricing_tier": "Standard",
+  "models": [
+    "gpt-5",
+    "gpt-5-mini",
+    "gpt-5-nano",
+    "gpt-5-chat-latest",
+    "gpt-5-codex",
+    "gpt-4.1",
+    "gpt-4.1-mini",
+    "gpt-4o"
+  ],
+  "prices": {
+    "gpt-5": {
+      "Standard": {
+        "input": 1.25,
+        "cached_input": 0.125,
+        "output": 10.0
+      }
+    },
+    "gpt-5-mini": {
+      "Standard": {
+        "input": 0.25,
+        "cached_input": 0.025,
+        "output": 2.0
+      }
+    },
+    "gpt-5-nano": {
+      "Standard": {
+        "input": 0.05,
+        "cached_input": 0.005,
+        "output": 0.4
+      }
+    },
+    "gpt-5-chat-latest": {
+      "Standard": {
+        "input": 1.25,
+        "cached_input": 0.125,
+        "output": 10.0
+      }
+    },
+    "gpt-5-codex": {
+      "Standard": {
+        "input": 1.25,
+        "cached_input": 0.125,
+        "output": 10.0
+      }
+    },
+    "gpt-4.1": {
+      "Standard": {
+        "input": 2.0,
+        "cached_input": 0.5,
+        "output": 8.0
+      }
+    },
+    "gpt-4.1-mini": {
+      "Standard": {
+        "input": 0.4,
+        "cached_input": 0.1,
+        "output": 1.6
+      }
+    },
+    "gpt-4o": {
+      "Standard": {
+        "input": 2.5,
+        "cached_input": 1.25,
+        "output": 10.0
+      }
+    }
+  }
+}

@@ -1,0 +1,2 @@
+model,supports_browsing,ok,error,input_tokens,cached_input_tokens,output_tokens,total_tokens,price_usd,output
+demo-model,False,True,,100,0,30,130,nan,Group books by genre.
